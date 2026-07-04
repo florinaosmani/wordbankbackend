@@ -8,6 +8,7 @@ import java.util.List;
 
 @Service
 public class WordService {
+
     private List<Word> words = List.of(
             new Word(
                     "1",
@@ -17,7 +18,6 @@ public class WordService {
                     "əˈbʌndənt",
                     List.of(
                             new Definition(
-                                    "d1",
                                     "existing or available in large quantities; more than enough",
                                     "adjective",
                                     false,
@@ -49,7 +49,6 @@ public class WordService {
                     "ˈflʌrɪʃ",
                     List.of(
                             new Definition(
-                                    "d2",
                                     "to grow or develop in a healthy or vigorous way",
                                     "verb",
                                     false,
@@ -77,7 +76,6 @@ public class WordService {
                                     )
                             ),
                             new Definition(
-                                    "d3",
                                     "a bold or extravagant gesture or action made especially to attract attention",
                                     "noun",
                                     false,
