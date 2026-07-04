@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: wordbank-postgres
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: wordbankdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - wordbank-data:/var/lib/postgresql/data
+
+volumes:
+  wordbank-data:
