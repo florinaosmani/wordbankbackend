@@ -1,4 +1,4 @@
-package ch.fo.wordbankbackend;
+package ch.fo.wordbankbackend.model;
 
 import java.util.List;
 

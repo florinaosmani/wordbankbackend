@@ -1,23 +1,23 @@
-package ch.fo.wordbankbackend;
+package ch.fo.wordbankbackend.service;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import ch.fo.wordbankbackend.model.Definition;
+import ch.fo.wordbankbackend.model.Word;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@RestController
-public class WordController {
+@Service
+public class WordService {
     private List<Word> words = List.of(
             new Word(
-                   "1",
-                   "abundant",
+                    "1",
+                    "abundant",
                     false,
                     3,
                     "əˈbʌndənt",
                     List.of(
                             new Definition(
-                                   "d1",
+                                    "d1",
                                     "existing or available in large quantities; more than enough",
                                     "adjective",
                                     false,
@@ -99,13 +99,11 @@ public class WordController {
             )
     );
 
-    @GetMapping("api/words")
-    public List<Word> getWords() {
+    public List<Word> getAllWords() {
         return words;
     }
 
-    @GetMapping("api/words/{id}")
-    public Word getWordById(@PathVariable String id){
+    public Word getWordById(String id) {
         for (Word word : words){
             if (word.getId().equals(id)){
                 return word;
