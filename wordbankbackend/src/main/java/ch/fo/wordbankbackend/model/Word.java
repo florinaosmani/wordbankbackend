@@ -2,6 +2,7 @@ package ch.fo.wordbankbackend.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /** Ein Wort mit einer oder mehreren Definitionen. */
@@ -29,21 +30,20 @@ public class Word {
     @OneToMany(mappedBy = "word",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
-    private List<Definition> results;
+    private List<Definition> results = new ArrayList<>();
 
     /** Parameterloser Konstruktor, den JPA/Hibernate braucht */
     public Word(){
 
     }
 
-    /** Konstruktor mit allen Parametern */
-    public Word(String id, String word, boolean isFavoriteWord, int syllables, String pronunciation, List<Definition> results) {
+    /** Konstruktor mit allen Attributen bis auf results*/
+    public Word(String id, String word, boolean isFavoriteWord, int syllables, String pronunciation) {
         this.id = id;
         this.word = word;
         this.isFavoriteWord = isFavoriteWord;
         this.syllables = syllables;
         this.pronunciation = pronunciation;
-        this.results = results;
     }
 
     /**
