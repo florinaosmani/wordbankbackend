@@ -3,7 +3,6 @@ package ch.fo.wordbankbackend;
 import ch.fo.wordbankbackend.model.Definition;
 import ch.fo.wordbankbackend.model.Word;
 import ch.fo.wordbankbackend.repository.WordRepository;
-import ch.fo.wordbankbackend.service.WordService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 

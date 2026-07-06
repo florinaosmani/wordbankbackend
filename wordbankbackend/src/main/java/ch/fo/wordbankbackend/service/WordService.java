@@ -1,11 +1,15 @@
 package ch.fo.wordbankbackend.service;
 
-import ch.fo.wordbankbackend.model.Definition;
+import ch.fo.wordbankbackend.dto.WordFormDTO;
+import ch.fo.wordbankbackend.dto.WordResponseDTO;
+import ch.fo.wordbankbackend.mapper.WordMapper;
 import ch.fo.wordbankbackend.model.Word;
 import ch.fo.wordbankbackend.repository.WordRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class WordService {
@@ -17,11 +21,14 @@ public class WordService {
     }
 
     /**
-     * Liefert alle Wörter aus der DB, samt deren Definitionen.
-     * @return Liste mit allen Wörtern.
+     * Liefert alle Wörter aus der DB als DTO, samt deren Definitionen.
+     * @return Liste mit allen Wörtern als DTO.
      */
-    public List<Word> getAllWords() {
-        return wordRepository.findAll();
+    @Transactional(readOnly = true)
+    public List<WordResponseDTO> getAllWords() {
+        return wordRepository.findAll().stream()
+                .map(WordMapper::toDTO)
+                .toList();
     }
 
     /**
@@ -29,27 +36,32 @@ public class WordService {
      * @param id Die Id des gesuchten Wortes.
      * @return Das Wort mit der passenden ID, oder null, wenn nicht gefunden.
      */
-    public Word getWordById(String id) {
-        return wordRepository.findById(id).orElse(null);
+    @Transactional(readOnly = true)
+    public WordResponseDTO getWordById(String id) {
+        Word word = wordRepository.findById(id).orElse(null);
+
+        return WordMapper.toDTO(word);
     }
 
     /**
      * Speichert ein neues Wort in der DB.
-     * @param word Das zu speichernde Wort.
+     * @param form Das zu speichernde Wort als DTO.
      * @return Das in der DB gespeicherte Wort.
      */
-    public Word createWord(Word word) {
+    public Word createWord(WordFormDTO form) {
+        String id = UUID.randomUUID().toString();
+        Word word = WordMapper.toEntity(id, form);
         return wordRepository.save(word);
     }
 
     /**
      * Aktualisiert ein bestehendes Wort.
      * @param id Die ID des zu verändernde Wort.
-     * @param word Daso Wort mit den Änderungen.
+     * @param form Das Wort mit den Änderungen als DTO.
      * @return Das in der DB aktualisierte Wort.
      */
-    public Word updateWord(String id, Word word){
-        word.setId(id);
+    public Word updateWord(String id, WordFormDTO form){
+        Word word = WordMapper.toEntity(id, form);
         return wordRepository.save(word);
     }
 
