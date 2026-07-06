@@ -38,6 +38,16 @@ public class WordController {
     }
 
     /**
+     * Gibt entweder alle favorisierten oder alle nicht favorisierten Wörter zurück.
+     * @param isF Boolean, ob favorisierte oder nicht favorisierte Wörter zurückgegeben werden sollten.
+     * @return Liste an entweder favorisierten oder nicht favorisierten Wörtern.
+     */
+    @GetMapping("/api/words/isFavWord/{isF}")
+    public List<WordResponseDTO> getWordByFavorite(@PathVariable boolean isF){
+        return wordService.getWordsByFavorite(isF);
+    }
+
+    /**
      * Erstellt ein neues Wort.
      * @param form Das Wort, welches man erstellen möchte.
      * @return Das neu erstellte Word.

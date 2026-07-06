@@ -7,6 +7,8 @@ import ch.fo.wordbankbackend.model.Word;
 import ch.fo.wordbankbackend.repository.WordRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.UUID;
@@ -44,6 +46,18 @@ public class WordService {
     }
 
     /**
+     * Liefert alle Wörter, welche favorisiert wurden.
+     * @param isF Boolean, ob es favorisiert ist oder nicht.
+     * @return Eine Liste an Wörtern.
+     */
+    @Transactional(readOnly = true)
+    public List<WordResponseDTO> getWordsByFavorite(boolean isF){
+        return wordRepository.findByIsFavoriteWord(isF).stream()
+                .map(WordMapper::toDTO)
+                .toList();
+    }
+
+    /**
      * Speichert ein neues Wort in der DB.
      * @param form Das zu speichernde Wort als DTO.
      * @return Das in der DB gespeicherte Wort.
@@ -72,4 +86,5 @@ public class WordService {
     public void deleteWord(String id){
         wordRepository.deleteById(id);
     }
+
 }
