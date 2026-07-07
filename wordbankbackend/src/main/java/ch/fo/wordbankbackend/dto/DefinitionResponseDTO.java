@@ -11,6 +11,13 @@ Gibt die ID extra nicht zurück, weil die im Frontend nicht gebraucht wird.
 
 /**
  * Datentransfer-Objekt für das Lesen einer Definition.
+ * @param definition
+ * @param partOfSpeech
+ * @param isFavoriteDefinition
+ * @param note
+ * @param synonyms
+ * @param examples
+ * @param antonyms
  */
 public record DefinitionResponseDTO(
         String definition,

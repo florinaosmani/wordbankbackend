@@ -2,13 +2,12 @@ package ch.fo.wordbankbackend.service;
 
 import ch.fo.wordbankbackend.dto.WordFormDTO;
 import ch.fo.wordbankbackend.dto.WordResponseDTO;
+import ch.fo.wordbankbackend.exception.WordNotFoundException;
 import ch.fo.wordbankbackend.mapper.WordMapper;
 import ch.fo.wordbankbackend.model.Word;
 import ch.fo.wordbankbackend.repository.WordRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.UUID;
@@ -36,11 +35,12 @@ public class WordService {
     /**
      * Sucht ein Wort anhand seiner ID und gibt es zurück.
      * @param id Die Id des gesuchten Wortes.
-     * @return Das Wort mit der passenden ID, oder null, wenn nicht gefunden.
+     * @return Das Wort mit der passenden ID als DTO, oder null, wenn nicht gefunden.
      */
     @Transactional(readOnly = true)
     public WordResponseDTO getWordById(String id) {
-        Word word = wordRepository.findById(id).orElse(null);
+        Word word = wordRepository.findById(id)
+                .orElseThrow(() -> new WordNotFoundException(id));
 
         return WordMapper.toDTO(word);
     }
@@ -48,7 +48,7 @@ public class WordService {
     /**
      * Liefert alle Wörter, welche favorisiert wurden.
      * @param isF Boolean, ob es favorisiert ist oder nicht.
-     * @return Eine Liste an Wörtern.
+     * @return Eine Liste an Wörtern als DTOs.
      */
     @Transactional(readOnly = true)
     public List<WordResponseDTO> getWordsByFavorite(boolean isF){
@@ -60,23 +60,29 @@ public class WordService {
     /**
      * Speichert ein neues Wort in der DB.
      * @param form Das zu speichernde Wort als DTO.
-     * @return Das in der DB gespeicherte Wort.
+     * @return Das in der DB gespeicherte Wort als DTO.
      */
-    public Word createWord(WordFormDTO form) {
+    public WordResponseDTO createWord(WordFormDTO form) {
         String id = UUID.randomUUID().toString();
         Word word = WordMapper.toEntity(id, form);
-        return wordRepository.save(word);
+        Word saved = wordRepository.save(word);
+        return WordMapper.toDTO(saved);
     }
 
     /**
      * Aktualisiert ein bestehendes Wort.
      * @param id Die ID des zu verändernde Wort.
      * @param form Das Wort mit den Änderungen als DTO.
-     * @return Das in der DB aktualisierte Wort.
+     * @return Das in der DB aktualisierte Wort als DTO.
      */
-    public Word updateWord(String id, WordFormDTO form){
+    public WordResponseDTO updateWord(String id, WordFormDTO form){
+        if (!wordRepository.existsById(id)){
+            throw new WordNotFoundException(id);
+        }
+
         Word word = WordMapper.toEntity(id, form);
-        return wordRepository.save(word);
+        Word saved = wordRepository.save(word);
+        return WordMapper.toDTO(saved);
     }
 
     /**
@@ -84,6 +90,10 @@ public class WordService {
      * @param id Die ID des zu löschenden Worts.
      */
     public void deleteWord(String id){
+        if (!wordRepository.existsById(id)){
+            throw new WordNotFoundException(id);
+        }
+
         wordRepository.deleteById(id);
     }
 

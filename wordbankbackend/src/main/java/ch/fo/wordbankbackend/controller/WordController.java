@@ -2,8 +2,8 @@ package ch.fo.wordbankbackend.controller;
 
 import ch.fo.wordbankbackend.dto.WordFormDTO;
 import ch.fo.wordbankbackend.dto.WordResponseDTO;
-import ch.fo.wordbankbackend.model.Word;
 import ch.fo.wordbankbackend.service.WordService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,7 +40,7 @@ public class WordController {
     /**
      * Gibt entweder alle favorisierten oder alle nicht favorisierten Wörter zurück.
      * @param isF Boolean, ob favorisierte oder nicht favorisierte Wörter zurückgegeben werden sollten.
-     * @return Liste an entweder favorisierten oder nicht favorisierten Wörtern.
+     * @return Liste an entweder favorisierten oder nicht favorisierten Wörtern als DTOs.
      */
     @GetMapping("/api/words/isFavWord/{isF}")
     public List<WordResponseDTO> getWordByFavorite(@PathVariable boolean isF){
@@ -50,11 +50,11 @@ public class WordController {
     /**
      * Erstellt ein neues Wort.
      * @param form Das Wort, welches man erstellen möchte.
-     * @return Das neu erstellte Word.
+     * @return Das neu erstellte Word als DTO.
      */
     @PostMapping("/api/words")
     @ResponseStatus(HttpStatus.CREATED)
-    public Word createWord(@RequestBody WordFormDTO form){
+    public WordResponseDTO createWord(@Valid @RequestBody WordFormDTO form){
         return wordService.createWord(form);
     }
 
@@ -62,10 +62,10 @@ public class WordController {
      * Das gewünschte Wort aktualisieren.
      * @param id ID des zu aktualisierenden Wortes.
      * @param form Die aktualisierte Version des Wortes.
-     * @return Das aktualisierte Wort.
+     * @return Das aktualisierte Wort als DTO.
      */
     @PutMapping("/api/words/{id}")
-    public Word updateWord(@PathVariable String id, @RequestBody WordFormDTO form){
+    public WordResponseDTO updateWord(@PathVariable String id, @Valid @RequestBody WordFormDTO form){
         return wordService.updateWord(id, form);
     }
 

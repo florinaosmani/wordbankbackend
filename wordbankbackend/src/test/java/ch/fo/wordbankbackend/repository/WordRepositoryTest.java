@@ -1,6 +1,5 @@
 package ch.fo.wordbankbackend.repository;
 
-import ch.fo.wordbankbackend.dto.WordResponseDTO;
 import ch.fo.wordbankbackend.model.Word;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
