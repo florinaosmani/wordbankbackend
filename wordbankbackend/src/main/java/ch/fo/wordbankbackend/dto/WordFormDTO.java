@@ -20,7 +20,7 @@ public record WordFormDTO(
         @NotBlank(message = "must not be blank.")
         String word,
 
-        //kein Validation, weil defaults to true bei boolean oder 0 bei int
+        //kein Validation, weil defaults to false bei boolean oder 0 bei int
         boolean isFavoriteWord,
         int syllables,
 

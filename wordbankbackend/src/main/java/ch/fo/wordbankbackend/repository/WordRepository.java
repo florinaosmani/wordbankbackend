@@ -9,7 +9,7 @@ import java.util.List;
  * Datenbank-Zugriff für {@link Word}-Objekte.
  *
  * Erbt von {@link JpaRepository} und erhält dadurch automatisch Methoden
- * wie {@code save()}, {@code findById()}, {@code findAll()}, {@code count()} und {@code delete()}
+ * wie {@code save()}, {@code findById()}, {@code findAll()}, {@code count()} und {@code delete()}.
  */
 
 public interface WordRepository extends JpaRepository<Word, String> {

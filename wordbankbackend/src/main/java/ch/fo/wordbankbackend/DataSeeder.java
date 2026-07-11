@@ -29,8 +29,8 @@ public class DataSeeder implements CommandLineRunner {
     /**
      * Liest {@code words.json} aus dem Classpath,
      * setzt den Backlink von {@link ch.fo.wordbankbackend.model.Definition} zu
-     * {@link Word} und speicher alle Wörter in der DB.
-     * Wird nur ausgeführt, wenn die DB leer ist, um doppelstes Seeding zu vermeiden.
+     * {@link Word} und speichert alle Wörter in der DB.
+     * Wird nur ausgeführt, wenn die DB leer ist, um doppeltes Seeding zu vermeiden.
      * @param args incoming main method arguments
      * @throws Exception wenn {@code words.json} nicht gefunden oder nicht gelesen werden kann.
      */
