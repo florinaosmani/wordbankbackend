@@ -9,11 +9,11 @@ import java.util.List;
 
 /**
  * Datentransfer Objekt für das Erstellen und Ändern eines Wortes.
- * @param word
- * @param isFavoriteWord
- * @param syllables
- * @param pronunciation
- * @param results
+ * @param word Das Wort als String, darf nicht leer sein.
+ * @param isFavoriteWord Ob das Wort favorisiert ist, defaults zu {@code false}.
+ * @param syllables Die Anzahl der Silben, default zu {@code 0}.
+ * @param pronunciation Die Aussprache des Wortes, darf nicht leer sein.
+ * @param results Liste der Definitionen, muss mindestens eine Definition enthalten.
  */
 
 public record WordFormDTO(

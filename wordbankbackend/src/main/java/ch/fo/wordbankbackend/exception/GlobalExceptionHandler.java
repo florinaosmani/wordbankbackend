@@ -12,13 +12,17 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Globaler Exception-Handler für die gesamte API.
+ * Fängt bekannte Exceptions ab und gibt einheitliche {@link ErrorResponse}-Objekte zurück.
+ */
 @RestControllerAdvice
 public class GlobalExceptionHandler extends RuntimeException {
 
     /**
-     * Behandelt ein nicht gefundenes Wort und liefert 404.
-     * @param ex Die Exception WordNotFoundException.
-     * @return Eine ErrorResponse Instanz mit dem jetztigen Datum, dem Status 404, der Nachricht der WordNotFoundException und einem leeren Map.
+     * Behandelt ein nicht gefundenes Wort und liefert {@code 404}.
+     * @param ex Die geworfene {@link WordNotFoundException}.
+     * @return {@link ErrorResponse} mit dem jetztigen Datum, dem Status {@code 404} und der Fehlermeldung.
      */
     @ExceptionHandler(WordNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -32,9 +36,11 @@ public class GlobalExceptionHandler extends RuntimeException {
     }
 
     /**
-     * Behandelt eine fehlgeschlagene Validierung und liefert 400 Bad-Request.
-     * @param ex Die MethodArgumentNotValidException.
-     * @return Eine ErrorResponse-Instanz mit der aktuellen Zeit, Status 400, Einer Validation failed NAchricht und einer HashMap, welche das Feld und die dazugehörige Fehlermeldung zeigt.
+     * Behandelt eine fehlgeschlagene Validierung und liefert {@code 400}.
+     * Sammelt alle Felderfehler und gibt sie als Map zurück.
+     *
+     * @param ex Die geworfene {@link MethodArgumentNotValidException}.
+     * @return {@link ErrorResponse} mit der aktuellen Zeit, Status {@code 400} und einer Map der fehlerhaften Fehler und deren Fehlermeldung.
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)

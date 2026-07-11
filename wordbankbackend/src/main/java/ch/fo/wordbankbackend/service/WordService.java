@@ -12,6 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Service für die Geschäftslogik rund um {@link Word}-Objekte.
+ */
 @Service
 public class WordService {
 
@@ -23,7 +26,7 @@ public class WordService {
 
     /**
      * Liefert alle Wörter aus der DB als DTO, samt deren Definitionen.
-     * @return Liste mit allen Wörtern als DTO.
+     * @return Liste mit aller {@link WordResponseDTO}s.
      */
     @Transactional(readOnly = true)
     public List<WordResponseDTO> getAllWords() {
@@ -33,9 +36,10 @@ public class WordService {
     }
 
     /**
-     * Sucht ein Wort anhand seiner ID und gibt es zurück.
+     * Sucht ein Wort anhand seiner ID und gibt es als DTO zurück.
      * @param id Die Id des gesuchten Wortes.
-     * @return Das Wort mit der passenden ID als DTO, oder null, wenn nicht gefunden.
+     * @return Das gefundene {@link WordResponseDTO}.
+     * @throws WordNotFoundException wenn kein Wort mit dieser ID existiert.
      */
     @Transactional(readOnly = true)
     public WordResponseDTO getWordById(String id) {
@@ -46,9 +50,9 @@ public class WordService {
     }
 
     /**
-     * Liefert alle Wörter, welche favorisiert wurden.
-     * @param isF Boolean, ob es favorisiert ist oder nicht.
-     * @return Eine Liste an Wörtern als DTOs.
+     * Liefert alle Wörter, welche favorisiert oder nicht favorisiert sind.
+     * @param isF {@code true} für favorisierte, {@code false} für nicht favorisierte Wörter.
+     * @return Eine Liste der gefilterten {@link WordResponseDTO}s.
      */
     @Transactional(readOnly = true)
     public List<WordResponseDTO> getWordsByFavorite(boolean isF){
@@ -58,9 +62,9 @@ public class WordService {
     }
 
     /**
-     * Speichert ein neues Wort in der DB.
-     * @param form Das zu speichernde Wort als DTO.
-     * @return Das in der DB gespeicherte Wort als DTO.
+     * Erstellt ein neues Wort aus den Formulardaten und speichert es in der DB.
+     * @param form Die validierten Eingabedaten des neuen Wortes.
+     * @return Das gespeicherte {@link WordResponseDTO}.
      */
     public WordResponseDTO createWord(WordFormDTO form) {
         String id = UUID.randomUUID().toString();
@@ -70,10 +74,11 @@ public class WordService {
     }
 
     /**
-     * Aktualisiert ein bestehendes Wort.
-     * @param id Die ID des zu verändernde Wort.
-     * @param form Das Wort mit den Änderungen als DTO.
-     * @return Das in der DB aktualisierte Wort als DTO.
+     * Aktualisiert ein bestehendes Wort anhand seiner ID.
+     * @param id Die ID des zu aktualisierenden Wortes.
+     * @param form Die validierten, aktualisierten Daten des Wortes.
+     * @return Das aktualisierte {@link WordResponseDTO}.
+     * @throws WordNotFoundException wenn kein Wort mit dieser ID existiert.
      */
     public WordResponseDTO updateWord(String id, WordFormDTO form){
         if (!wordRepository.existsById(id)){
@@ -86,8 +91,9 @@ public class WordService {
     }
 
     /**
-     * Löscht ein Wort aus der DB.
-     * @param id Die ID des zu löschenden Worts.
+     * Löscht ein Wort anhand seiner ID inklusive aller zugehörigen Definitionen.
+     * @param id Die ID des zu löschenden Wortes.
+     * @throws WordNotFoundException wenn kein Wort mit dieser ID existiert.
      */
     public void deleteWord(String id){
         if (!wordRepository.existsById(id)){

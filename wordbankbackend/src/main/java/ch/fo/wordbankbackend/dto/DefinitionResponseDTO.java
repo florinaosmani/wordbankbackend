@@ -11,13 +11,13 @@ Gibt die ID extra nicht zurück, weil die im Frontend nicht gebraucht wird.
 
 /**
  * Datentransfer-Objekt für das Lesen einer Definition.
- * @param definition
- * @param partOfSpeech
- * @param isFavoriteDefinition
- * @param note
- * @param synonyms
- * @param examples
- * @param antonyms
+ * @param definition Die eigentliche Definition des Wortes.
+ * @param partOfSpeech Die Wortart.
+ * @param isFavoriteDefinition Ob die Definition favorisiert ist.
+ * @param note Notiz zum favorisierten Wort.
+ * @param synonyms Liste von Synonymen.
+ * @param examples Liste von Beispielsätzen.
+ * @param antonyms Liste von Antonymen.
  */
 public record DefinitionResponseDTO(
         String definition,

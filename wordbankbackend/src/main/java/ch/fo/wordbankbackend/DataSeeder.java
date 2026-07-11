@@ -12,7 +12,7 @@ import java.io.InputStream;
 import java.util.List;
 
 /**
- * Füllt die Datenbank beim Programmstart mit Wörtern aus words.json,
+ * Füllt die Datenbank beim Programmstart mit Wörtern aus {@code words.json},
  * aber nur wenn die Tabelle noch leer ist.
  */
 @Component
@@ -27,8 +27,12 @@ public class DataSeeder implements CommandLineRunner {
     }
 
     /**
-     * Seedet die DB mit den Wörtern, aber nur wenn sie leer ist.
+     * Liest {@code words.json} aus dem Classpath,
+     * setzt den Backlink von {@link ch.fo.wordbankbackend.model.Definition} zu
+     * {@link Word} und speicher alle Wörter in der DB.
+     * Wird nur ausgeführt, wenn die DB leer ist, um doppelstes Seeding zu vermeiden.
      * @param args incoming main method arguments
+     * @throws Exception wenn {@code words.json} nicht gefunden oder nicht gelesen werden kann.
      */
     @Override
     public void run(String... args) throws Exception{
@@ -38,10 +42,7 @@ public class DataSeeder implements CommandLineRunner {
             try(InputStream inputStream = resource.getInputStream()) {
                 List<Word> words = objectMapper.readValue(inputStream, new TypeReference<List<Word>>() {});
 
-               words.forEach(word -> {
-                            word.getResults().forEach(def -> def.setWord(word));
-               });
-
+                words.forEach(word -> word.getResults().forEach(def -> def.setWord(word)));
 
                 wordRepository.saveAll(words);
                 System.out.println("DataSeeder: " + wordRepository.count() + " Wörter in die DB geschrieben.");

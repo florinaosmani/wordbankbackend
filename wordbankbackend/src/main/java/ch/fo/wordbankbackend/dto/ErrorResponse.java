@@ -7,10 +7,10 @@ import java.util.Map;
 
 /**
  * Einheitliches Format für Error-Antoworten der API.
- * @param timestamp Aktueller Zeitstempfel.
+ * @param timestamp Aktueller Zeitstempel.
  * @param status    HTTP-Status.
- * @param message   Fehlernachricht.
- * @param fieldErrors   HashMap, das zeigt welches Feld einen Fehler hat und die dazugehörige Fehlermeldung.
+ * @param message   Fehlermeldung.
+ * @param fieldErrors   Map mit Feldname und zugehöriger Fehlermeldung, nur bei Validierungsfehlern befüllt, sonst leer.
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public record ErrorResponse(

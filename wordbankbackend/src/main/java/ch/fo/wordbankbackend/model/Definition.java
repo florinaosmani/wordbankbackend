@@ -5,8 +5,8 @@ import jakarta.persistence.*;
 import java.util.List;
 
 /**
- * Eine Definition innerhalb eines Wortes.
- * Hält den Fremdschlüssel zum Wort.
+ * Eine Definition innerhalb eines {@link Word}.
+ * Hält den Fremdschlüssel zum zugehörigen Wort.
  */
 @Entity
 @Table(name = "definitions")
@@ -51,7 +51,18 @@ public class Definition {
 
     }
 
-    /** Konstruktor mit allen Parametern */
+    /**
+     * Erstellt eine neue Definition mit allen Feldern.
+     * Der Backlink zu {@link Word} wird nicht hier gesetzt, sondern via {@link Word#addDefinition(Definition)}.
+     *
+     * @param definition          Die eigentliche Definition als Text.
+     * @param partOfSpeech        Die Wortart, z.B. {@code noun} oder {@code verb}.
+     * @param isFavoriteDefinition Ob die Definition favorisiert ist.
+     * @param note                Optionale persönliche Notiz.
+     * @param examples            Liste von Beispielsätzen.
+     * @param synonyms            Liste von Synonymen.
+     * @param antonyms            Liste von Antonymen.
+     */
     public Definition(String definition, String partOfSpeech, boolean isFavoriteDefinition, String note, List<String> examples, List<String> synonyms, List<String> antonyms) {
         this.definition = definition;
         this.partOfSpeech = partOfSpeech;

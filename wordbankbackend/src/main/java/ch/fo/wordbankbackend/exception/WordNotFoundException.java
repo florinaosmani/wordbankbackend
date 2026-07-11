@@ -5,6 +5,9 @@ package ch.fo.wordbankbackend.exception;
  */
 public class WordNotFoundException extends RuntimeException {
 
+    /**
+     * @param id Die ID, für die kein Wort gefunden wurde.
+     */
     public WordNotFoundException(String id) {
         super("There's no word with id " + id + ".");
     }

@@ -10,7 +10,8 @@ import ch.fo.wordbankbackend.model.Word;
 import java.util.List;
 
 /**
- * Wandelt DTOs in Entities und Entities in DTOs um.
+ * Wandelt {@link Word}-Entities in Response-DTOs und FormDTOs in Entities um.
+ * Statische Hilfsklasse.
  */
 public class WordMapper {
 
@@ -19,9 +20,9 @@ public class WordMapper {
     }
 
     /**
-     * Wandelt ein Wort-Entity in ein DTO um.
-     * @param word Die Wort-Entität.
-     * @return Das Wort-DTO mit den Definition DTOs.
+     * Wandelt ein {@link Word}-Entity in ein {@link WordResponseDTO} um, inklusive aller zugehörigen Definitionen.
+     * @param word Die zu umwandelnde {@link Word}-Entity.
+     * @return {@link WordResponseDTO} mit allen Feldern und Definitions-DTOs.
      */
     public static WordResponseDTO toDTO(Word word) {
         List<DefinitionResponseDTO> defDTOs = word.getResults().stream()
@@ -39,8 +40,8 @@ public class WordMapper {
     }
 
     /**
-     * Wandelt eine Definitions-Entität in ein DTO um.
-     * @param def Die Definitions-Entität.
+     * Wandelt eine {@link Definition}-Entity in ein {@link DefinitionResponseDTO} um.
+     * @param def Die zu umwandelnde {@link Definition}-Entity.
      * @return Das Definitions-DTO.
      */
     public static DefinitionResponseDTO toDefDTO(Definition def){
@@ -56,10 +57,11 @@ public class WordMapper {
     }
 
     /**
-     * Wandelt ein Wort DTO in eine Entität um.
+     * Wandelt ein {@link WordFormDTO} in eine {@link Word}-Entity um.
+     * Die ID wird separat übergeben, da sie beim Erstellen vom Server generiert wird.
      * @param id ID des Wortes.
-     * @param dto Das DTO des Wortes.
-     * @return Eine Wort-Entität.
+     * @param dto Die validierten Formulardaten.
+     * @return Eine vollständige {@link Word}-Entity.
      */
     public static Word toEntity(String id, WordFormDTO dto){
         Word word = new Word();
@@ -77,9 +79,10 @@ public class WordMapper {
     }
 
     /**
-     * Wandelt ein Definitions DTO in eine Entität um.
-     * @param defDto Das DTO der Definition.
-     * @return Eine Definitionsentität.
+     * Wandelt ein {@link DefinitionFormDTO} in eine {@link Definition}-Entity um.
+     * Der Backlink zu {@link Word} wird nicht hier, sondern via {@link WordMapper#toEntity(String, WordFormDTO)} gesetzt.
+     * @param defDto Die validierten Formulardaten der Definition.
+     * @return Eine {@link Definition}-Entity ohne gesetzen Word-Backlink.
      */
     public static Definition toDefEntity(DefinitionFormDTO defDto){
         return new Definition(

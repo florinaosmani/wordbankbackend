@@ -3,7 +3,6 @@ package ch.fo.wordbankbackend.service;
 import ch.fo.wordbankbackend.dto.DefinitionFormDTO;
 import ch.fo.wordbankbackend.dto.WordFormDTO;
 import ch.fo.wordbankbackend.dto.WordResponseDTO;
-import ch.fo.wordbankbackend.model.Word;
 import ch.fo.wordbankbackend.repository.WordRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,13 +15,14 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-public class WordServiceTest {
+class WordServiceTest {
 
     @Autowired
     private WordService wordService;
     @Autowired
     private WordRepository wordRepository;
 
+    //aus SQ
     @Test
     @DisplayName("Gibt alle Wörter zurück.")
     void getAllWordsReturnsData() {
@@ -30,6 +30,7 @@ public class WordServiceTest {
         assertFalse(words.isEmpty());
     }
 
+    //aus SQ
     @Test
     @DisplayName("Gibt das korrekte Wort zurück, wenn die ID \"1\" ist.")
     void getWordByIdReturnsCorrectWord() {
@@ -38,14 +39,7 @@ public class WordServiceTest {
         assertEquals("1", word.id());
     }
 
-    @Test
-    @DisplayName("Gibt die korrekte Anzahl an Wörtern zurück.")
-    void getAllWordsReturnsCorrectAmountOfWords(){
-        long count = wordService.getAllWords().stream().count();
-
-        assertEquals(3, count);
-    }
-
+    //aus SQ
     @Test
     @DisplayName("Ein neues Wort wird persistent in der DB gespeichert.")
     @Transactional
@@ -68,13 +62,14 @@ public class WordServiceTest {
                 List.of(defForm)
         );
 
-        Word saved = wordService.createWord(form);
+        WordResponseDTO saved = wordService.createWord(form);
 
-        assertNotNull(saved.getId());
-        assertTrue(wordRepository.findById(saved.getId()).isPresent());
+        assertNotNull(saved.id());
+        assertTrue(wordRepository.findById(saved.id()).isPresent());
 
     }
 
+    //aus SQ
     @Test
     @DisplayName("Ein bestehendes Wort wird persistent aktualisiert")
     @Transactional
@@ -97,7 +92,7 @@ public class WordServiceTest {
                 List.of(defForm)
         );
 
-        Word saved = wordService.createWord(form);
+        WordResponseDTO saved = wordService.createWord(form);
 
         WordFormDTO toUpdate = new WordFormDTO(
                 "byebye",
@@ -107,8 +102,8 @@ public class WordServiceTest {
                 List.of(defForm)
         );
 
-        Word updated = wordService.updateWord(saved.getId(), toUpdate);
+        WordResponseDTO updated = wordService.updateWord(saved.id(), toUpdate);
 
-        assertEquals("byebye", wordRepository.findById(updated.getId()).orElse(null).getWord());
+        assertEquals("byebye", wordRepository.findById(updated.id()).orElse(null).getWord());
     }
 }

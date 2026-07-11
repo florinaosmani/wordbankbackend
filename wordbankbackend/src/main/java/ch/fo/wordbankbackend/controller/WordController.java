@@ -9,7 +9,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * REST-Controller für Wort-Operationen.
+ * Stellt Endpoints für das Abrufen, ERstellen, Aktualisieren und Löschen von Wörtern bereit.
+ */
 @RestController
+@RequestMapping("/api/words")
 public class WordController {
 
     private final WordService wordService;
@@ -19,61 +24,64 @@ public class WordController {
     }
 
     /**
-     * Gibt alle Wörter zurück.
-     * @return Alle Wörter als DTO.
+     * Liefert alle Wörter aus der Datenbank zurück.
+     * @return Liste aller {@link WordResponseDTO}s.
      */
-    @GetMapping("/api/words")
+    @GetMapping
     public List<WordResponseDTO> getWords() {
         return wordService.getAllWords();
     }
 
     /**
-     * Gibt ein Wort mit der gewünschten ID zurück.
+     * Liefert ein Wort anhand seiner ID.
      * @param id ID des gewünschten Wortes.
-     * @return Wort mit der gewünschten ID als DTO.
+     * @return Das gefundene Wort als {@link WordResponseDTO}.
+     * @throws ch.fo.wordbankbackend.exception.WordNotFoundException wenn kein Wort mit dieser ID existiert.
      */
-    @GetMapping("/api/words/{id}")
+    @GetMapping("/{id}")
     public WordResponseDTO getWordById(@PathVariable String id){
         return wordService.getWordById(id);
     }
 
     /**
      * Gibt entweder alle favorisierten oder alle nicht favorisierten Wörter zurück.
-     * @param isF Boolean, ob favorisierte oder nicht favorisierte Wörter zurückgegeben werden sollten.
-     * @return Liste an entweder favorisierten oder nicht favorisierten Wörtern als DTOs.
+     * @param isF {@code true} für favorisierte, {@code false} für nicht favorisierte Wörter.
+     * @return Liste an gefilterten {@link WordResponseDTO}
      */
-    @GetMapping("/api/words/isFavWord/{isF}")
+    @GetMapping("/isFavWord/{isF}")
     public List<WordResponseDTO> getWordByFavorite(@PathVariable boolean isF){
         return wordService.getWordsByFavorite(isF);
     }
 
     /**
-     * Erstellt ein neues Wort.
+     * Erstellt ein neues Wort aus den übergebenen Formulardaten.
      * @param form Das Wort, welches man erstellen möchte.
-     * @return Das neu erstellte Word als DTO.
+     * @return Das neu erstellte Word als {@link WordResponseDTO}.
      */
-    @PostMapping("/api/words")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public WordResponseDTO createWord(@Valid @RequestBody WordFormDTO form){
         return wordService.createWord(form);
     }
 
     /**
-     * Das gewünschte Wort aktualisieren.
+     * Das gewünschte Wort aktualisieren anhand seiner ID.
      * @param id ID des zu aktualisierenden Wortes.
-     * @param form Die aktualisierte Version des Wortes.
-     * @return Das aktualisierte Wort als DTO.
+     * @param form Die aktualisierte, validierte Version des Wortes.
+     * @return Das aktualisierte Wort als {@link WordResponseDTO}.
+     * @throws ch.fo.wordbankbackend.exception.WordNotFoundException wenn kein Wort mit dieser ID existiert.
      */
-    @PutMapping("/api/words/{id}")
+    @PutMapping("/{id}")
     public WordResponseDTO updateWord(@PathVariable String id, @Valid @RequestBody WordFormDTO form){
         return wordService.updateWord(id, form);
     }
 
     /**
-     * Löscht das gewünschte Wort.
+     * Löscht das gewünschte Wort anhand seiner ID inklusive aller zugehöriger Definitionen.
      * @param id ID des zu löschenden Wortes.
+     * @throws ch.fo.wordbankbackend.exception.WordNotFoundException wenn kein Wort mit dieser ID existiert.
      */
-    @DeleteMapping("/api/words/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteWord(@PathVariable String id){
         wordService.deleteWord(id);

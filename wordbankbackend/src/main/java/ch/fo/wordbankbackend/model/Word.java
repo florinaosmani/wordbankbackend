@@ -5,8 +5,10 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Ein Wort mit einer oder mehreren Definitionen. */
-
+/**
+ * Ein Wort mit einer oder mehreren {@link Definition}en.
+ * Besitzt die Beziehung zur {@link Definition}-Tabelle via {@code @OneToMany}.
+ */
 @Entity
 @Table(name = "words")
 public class Word {
@@ -37,7 +39,16 @@ public class Word {
 
     }
 
-    /** Konstruktor mit allen Attributen bis auf results*/
+    /**
+     * Erstellt ein neues Wort ohne Definitionen.
+     * Definitionen werden nachträglich via {@link #addDefinition(Definition)} hinzugefügt.
+     *
+     * @param id            Die eindeutige ID des Wortes.
+     * @param word          Das Wort als String.
+     * @param isFavoriteWord Ob das Wort favorisiert ist.
+     * @param syllables     Die Anzahl der Silben.
+     * @param pronunciation Die Aussprache des Wortes.
+     */
     public Word(String id, String word, boolean isFavoriteWord, int syllables, String pronunciation) {
         this.id = id;
         this.word = word;
@@ -47,8 +58,8 @@ public class Word {
     }
 
     /**
-     * Fügt eine Definition hinzu und hält beide Seiten der Beziehung synchron.
-     * @param def
+     * Fügt eine {@link Definition} hinzu und hält beide Seiten der Beziehung synchron, setzt auch den Backlink.
+     * @param def Die hinzuzufügende Definition.
      */
     public void addDefinition(Definition def){
         results.add(def);
@@ -57,8 +68,8 @@ public class Word {
 
     //removeItem wird im Frontend zwar nicht benutzt, jedoch sicher sinnvoll die zu haben, falls man das Frontend erweitert.
     /**
-     * Entfernt eine Definition vom Wort und hält beide Seiten der Beziehung syncrhon.
-     * @param def
+     * Entfernt eine {@link Definition} vom Wort und hält beide Seiten der Beziehung synchron.
+     * @param def Die zu entfernende Definiton.
      */
     public void removeItem(Definition def){
         results.remove(def);
